@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Estilos de letras -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Iconos Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Agenda Básica</title>
+</head>
+
+<body>
+    <header>
+        <h1>Agenda Básica con un CRUD</h1>
+        <nav class="menu-superior">
+            <ul class="menu-superior-ul">
+                <li><a href="#sobre-mi"><i class="fas fa-user"></i> Sobre mí</a></li>
+                <li><a href="#habilidades"><i class="fas fa-code"></i> Habilidades</a></li>
+                <li><a href="#redes-sociales"><i class="fas fa-share-alt"></i> Redes sociales</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="contenedor-general">
+        <!-- Menú lateral izquierdo -->
+        <aside class="menu-lateral">
+            <h2>Menú</h2>
+            <ul>
+                <li><a href="#agregar-tarea">Agregar Tarea</a></li>
+                <li><a href="#ver-tarea">Ver Tareas</a></li>
+                <li><a href="#eliminar-tarea">Eliminar Tarea</a></li>
+            </ul>
+            <!-- Botón de modo oscuro o claro -->
+            <button id="modo-toggle">🌙 Modo oscuro</button>
+        </aside>
+
+        <!-- Contenido principal -->
+        <main class="contenido-principal">
+            <div class="contenido-formulario">
+
+                <div class="descripcion" id="agregar-tarea">
+                    <h3 class="subtitulo-Formulario">✏️ Nueva Tarea | Formulario de Registro</h3>
+                    <p>  Completa todos los campos para agregar una nueva actividad a tu agenda:</p>
+                    <div class="contenido-principal-formulario">
+                        <form class="form-contacto" novalidate>
+                            <h2>INGRESAR TAREA</h2>
+                            <!--El formulario-->
+                            <fieldset>
+
+                                <div class="form-group">
+                                    <label for="titulo">Título de tarea:</label>
+                                    <input type="text" id="titulo" name="titulo"
+                                        placeholder="Ingrese el título de la tarea" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="descripcion">Descripción:</label>
+                                    <textarea id="descripcion" name="descripcion" rows="5"
+                                        placeholder="Describa la tarea aquí..." required></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="fecha_limite">Fecha límite:</label>
+                                    <input type="date" id="fecha_limite" name="fecha_limite" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <fieldset class="prioridad-group">
+                                        <legend>Prioridad:</legend>
+                                        <div class="radio-options">
+                                            <div class="radio-option">
+                                                <input type="radio" id="alta" name="prioridad" value="alta" required>
+                                                <label for="alta">Alta</label>
+                                            </div>
+                                            <div class="radio-option">
+                                                <input type="radio" id="media" name="prioridad" value="media">
+                                                <label for="media">Media</label>
+                                            </div>
+                                            <div class="radio-option">
+                                                <input type="radio" id="baja" name="prioridad" value="baja">
+                                                <label for="baja">Baja</label>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+                                <button id="enviar-formulario" type="submit">Enviar</button>
+
+                                <div id="mensaje-exito"
+                                    style="display: none; margin-top: 1rem; color: green; font-weight: bold;">
+                                    ¡Tarea creada con éxito!
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Elementos filtrados -->
+                <div class="descripcion">
+                    <h2>🔍 Buscador de Tareas | Filtros</h2>
+                    <p>
+                        Utiliza los siguientes filtros para encontrar exactamente lo que necesitas:
+                    </p>
+                    <div class="filtros-container">
+                        <div class="filtro-grupo">
+                            <label for="filtro-estado">Filtrar por estado:</label>
+                            <select id="filtro-estado" class="filtro-select">
+                                <option value="todos">Todos</option>
+                                <option value="pendiente">Pendiente</option>
+                                <option value="en-progreso">En progreso</option>
+                                <option value="completado">Completado</option>
+                            </select>
+                        </div>
+
+                        <div class="filtro-grupo">
+                            <label for="filtro-prioridad">Filtrar por prioridad:</label>
+                            <select id="filtro-prioridad" class="filtro-select">
+                                <option value="todos">Todos</option>
+                                <option value="critica">Crítica</option>
+                                <option value="alta">Alta</option>
+                                <option value="media">Media</option>
+                                <option value="baja">Baja</option>
+                            </select>
+                        </div>
+
+                        <div class="filtro-grupo">
+                            <label for="busqueda-titulo">Buscar por título:</label>
+                            <input type="text" id="busqueda-titulo" class="filtro-input"
+                                placeholder="Escribe el título...">
+                        </div>
+
+                        <button id="limpiar-filtros" class="filtro-boton">Limpiar filtros</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- TABLA DE TAREAS (conservando su posición original) -->
+    <article id="ver-tarea" class="descripcion">
+        <h2>📊 Vista Detallada de Tareas</h2>
+        <p>
+            Revisa el estado actual de todas tus actividades, filtradas según tus necesidades:
+        </p>
+
+        <div class="tabla-container">
+            <table class="tabla-tareas">
+                <caption>Lista de tareas</caption>
+                <thead>
+                    <tr>
+                        <th>🆔 ID</th>
+                        <th>📝 Título</th>
+                        <th>📌 Descripción</th>
+                        <th>📅 Fecha límite</th>
+                        <th>⚡ Prioridad</th>
+                        <th>✅ Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>101</td>
+                        <td>Reunión equipo</td>
+                        <td>Preparar presentación para cliente</td>
+                        <td>15/05/2023</td>
+                        <td>Alta</td>
+                        <td>Pendiente</td>
+                        <td class="acciones">
+                            <button class="editar">✏️ Editar</button>
+                            <button class="eliminar">🗑️ Eliminar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>102</td>
+                        <td>Informe mensual</td>
+                        <td>Completar informe de ventas</td>
+                        <td>20/05/2023</td>
+                        <td>Media</td>
+                        <td>En progreso</td>
+                        <td class="acciones">
+                            <button class="editar">✏️ Editar</button>
+                            <button class="eliminar">🗑️ Eliminar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>103</td>
+                        <td>Actualizar sistema</td>
+                        <td>Instalar última versión del software</td>
+                        <td>10/05/2023</td>
+                        <td>Crítica</td>
+                        <td>Completado</td>
+                        <td class="acciones">
+                            <button class="editar">✏️ Editar</button>
+                            <button class="eliminar">🗑️ Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="6">Total tareas</td>
+                        <td>3</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </article>
+
+    <!-- Sección sobre mí -->
+    <article id="sobre-mi" class="descripcion">
+        <h2>Sobre mí</h2>
+        <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti commodi tenetur beatae. Facere aliquid
+            error laudantium officiis doloremque ad aperiam maxime qui ut? Id reiciendis expedita, eaque reprehenderit
+            illo aut!
+        </p>
+    </article>
+
+    <!-- Sección habilidades -->
+    <article id="habilidades" class="descripcion">
+        <h2>Habilidades</h2>
+        <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti commodi tenetur beatae. Facere aliquid
+            error laudantium officiis doloremque ad aperiam maxime qui ut? Id reiciendis expedita, eaque reprehenderit
+            illo aut!
+        </p>
+    </article>
+
+    <!-- Footer -->
+    <footer class="footer" id="redes-sociales">
+        <div class="footer-content">
+            <p>&copy; 2025 Mi agenda 2025</p>
+            <div class="footer-redes">
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-facebook-f"></i> Facebook
+                </a>
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-linkedin-in"></i> LinkedIn
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
