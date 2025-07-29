@@ -517,7 +517,10 @@ fieldset {
 
 /*Fin de las alert */
 
-
+/**/
+#habilidades ul {
+    list-style: none;
+}
 
 /*MODO OSCURO PARA CIERTOS ELEMENTOS*/
 /* Modo oscuro - se activa con clase en body */
