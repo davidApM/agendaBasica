@@ -3,7 +3,18 @@ document.addEventListener('DOMContentLoaded', function() {
     let tareas = JSON.parse(localStorage.getItem('tareas')) || [];
     const modoGuardado = localStorage.getItem('modo');
     const modoOscuro = modoGuardado === 'oscuro';
-    
+
+    // Solicitar permiso para notificaciones al cargar la página
+    if ("Notification" in window) {
+        if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+            Notification.requestPermission().then(permiso => {
+                if (permiso === "granted") {
+                    console.log("¡Permiso para notificaciones concedido!");
+                }
+            });
+        }
+    }
+
     // Elementos del DOM
     const body = document.body;
     const botonModo = document.getElementById('modo-toggle');
@@ -42,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
         mostrarNotificacion(`Modo ${modo} activado`);
     }
 
-    // Función para mostrar notificaciones
+    // Función para mostrar notificaciones en la UI
     function mostrarNotificacion(mensaje, tipo = 'exito') {
         const notificacion = document.createElement('div');
         notificacion.className = `notificacion ${tipo}`;
@@ -120,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: Date.now(),
             titulo,
             descripcion,
-            fechaLimite: formatearFecha(fechaLimite),
+            fechaLimite: formatearFecha(fechaLimite), // Corregido: fechaLimite (no fechaLimite)
             prioridad,
             estado: 'Pendiente',
             fechaCreacion: new Date().toISOString()
@@ -130,6 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
         guardarTareas();
         renderizarTareas(tareas);
         mostrarNotificacion('Tarea creada con éxito', 'exito');
+        verificarTareasProximas(); // Verificar después de crear
     }
 
     function actualizarTarea(id, { titulo, descripcion, fechaLimite, prioridad }) {
@@ -149,6 +161,7 @@ document.addEventListener('DOMContentLoaded', function() {
             mostrarNotificacion('Tarea actualizada con éxito', 'exito');
             btnEnviar.textContent = 'Enviar';
             delete btnEnviar.dataset.editingId;
+            verificarTareasProximas(); // Verificar después de actualizar
         }
     }
 
@@ -225,7 +238,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.appendChild(confirmacion);
         setTimeout(() => confirmacion.classList.add('mostrar'), 100);
         
-        // Configurar eventos de los botones
         confirmacion.querySelector('#confirmar-eliminar').addEventListener('click', () => {
             eliminarTarea(id);
             cerrarNotificacion(confirmacion);
@@ -273,6 +285,7 @@ document.addEventListener('DOMContentLoaded', function() {
             tarea.estado = nuevoEstado;
             guardarTareas();
             mostrarNotificacion('Estado de tarea actualizado', 'exito');
+            verificarTareasProximas(); // Verificar después de cambiar estado
         }
     }
 
@@ -332,6 +345,44 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Función para verificar tareas próximas a vencer
+    function verificarTareasProximas() {
+        const ahora = new Date();
+        const tareasProximas = tareas.filter(tarea => {
+            if (tarea.estado === "Completado") return false;
+
+            // Convertir fecha límite (DD/MM/AAAA) a Date
+            const [dia, mes, anio] = tarea.fechaLimite.split('/');
+            const fechaLimite = new Date(`${anio}-${mes}-${dia}`);
+
+            // Calcular diferencia en milisegundos
+            const diferencia = fechaLimite - ahora;
+
+            // Notificar si vence en menos de 24 horas (86400000 ms)
+            return diferencia > 0 && diferencia <= 86400000;
+        });
+
+        // Mostrar notificación para cada tarea próxima
+        tareasProximas.forEach(tarea => {
+            mostrarNotificacionNavegador(
+                `⏰ ¡Tarea próxima: ${tarea.titulo}`,
+                `Vence el ${tarea.fechaLimite} (Prioridad: ${tarea.prioridad})`
+            );
+        });
+    }
+
+    // Función para mostrar notificaciones del navegador
+    function mostrarNotificacionNavegador(titulo, mensaje) {
+        if ("Notification" in window && Notification.permission === "granted") {
+            new Notification(titulo, {
+                body: mensaje,
+                icon: "favicon.ico",
+                vibrate: [200, 100, 200] // Vibración en móviles
+            });
+        }
+    }
+
+    // Cargar tareas iniciales (ejemplos)
     function cargarTareasIniciales() {
         if (tareas.length === 0) {
             tareas = [
@@ -366,4 +417,8 @@ document.addEventListener('DOMContentLoaded', function() {
             guardarTareas();
         }
     }
+
+    // Iniciar verificaciones periódicas
+    verificarTareasProximas(); // Primera verificación
+    setInterval(verificarTareasProximas, 3600000); // Cada 1 hora
 });
