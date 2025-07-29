@@ -557,6 +557,31 @@ body.modo-oscuro select:focus {
 
 /* Responsive */
 @media (max-width: 768px) {
+    /*Header*/
+    header {
+        flex-direction: column;
+        padding: 15px;
+        gap: 12px;
+    }
+    
+    header h1 {
+        font-size: 1.5rem;
+        margin-bottom: 5px;
+    }
+    
+    .menu-superior ul {
+        width: 100%;
+        gap: 10px;
+    }
+    
+    .menu-superior a {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
+
+
+    /*Contenedores*/
+
     .contenedor-general {
         flex-direction: column;
     }
@@ -598,5 +623,21 @@ body.modo-oscuro select:focus {
     
     #enviar-formulario {
         padding: 12px;
+    }
+
+    /*Para el Footer*/
+        .footer {
+        padding: 25px 0;
+        margin-top: 30px;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .footer-redes {
+        justify-content: center;
     }
 }
