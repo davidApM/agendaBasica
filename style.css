@@ -471,6 +471,54 @@ fieldset {
     opacity: 0.8;
 }
 
+/*Propiedades para las alert */
+/* Notificaciones personalizadas */
+.notificacion {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    transform: translateX(150%);
+    transition: transform 0.3s ease-out;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notificacion.mostrar {
+    transform: translateX(0);
+}
+
+.notificacion.exito {
+    background-color: var(--color-exito);
+    border-left: 5px solid darken(var(--color-exito), 10%);
+}
+
+.notificacion.error {
+    background-color: var(--color-error);
+    border-left: 5px solid darken(var(--color-error), 10%);
+}
+
+.notificacion.advertencia {
+    background-color: var(--color-advertencia);
+    border-left: 5px solid darken(var(--color-advertencia), 10%);
+}
+
+.notificacion .cerrar {
+    margin-left: 15px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/*Fin de las alert */
+
+
+
 /*MODO OSCURO PARA CIERTOS ELEMENTOS*/
 /* Modo oscuro - se activa con clase en body */
 body.modo-oscuro {
