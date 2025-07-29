@@ -86,6 +86,27 @@ header h1 {
     color: white;
 }
 
+/*Diseño para el boton de oscuro / claro*/
+/* Botón modo oscuro */
+#modo-toggle {
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #3b82f6;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+#modo-toggle:hover {
+    background-color: #60a5fa;
+}
+
+
 /* Contenido principal */
 .contenido-principal {
     flex: 1;
