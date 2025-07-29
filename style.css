@@ -422,7 +422,7 @@ fieldset {
 .filtro-boton {
     padding: 10px 20px;
     background-color: var(--color-primario-oscuro);
-    color: white;
+    color: var(--color-exito);
     border: none;
     border-radius: 6px;
     cursor: pointer;
