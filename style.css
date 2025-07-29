@@ -581,4 +581,22 @@ body.modo-oscuro select:focus {
     .editar, .eliminar {
         width: 100%;
     }
+
+    /*Para el formulario */
+        .contenido-principal-formulario {
+        padding: 15px;
+    }
+    
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .radio-options {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    #enviar-formulario {
+        padding: 12px;
+    }
 }
