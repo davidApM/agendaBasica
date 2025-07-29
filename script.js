@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Variables globales
     let tareas = JSON.parse(localStorage.getItem('tareas')) || [];
     const modoGuardado = localStorage.getItem('modo');
@@ -57,28 +57,28 @@ document.addEventListener('DOMContentLoaded', function() {
     function mostrarNotificacion(mensaje, tipo = 'exito') {
         const notificacion = document.createElement('div');
         notificacion.className = `notificacion ${tipo}`;
-        
+
         const iconos = {
             'error': '<i class="fas fa-times-circle"></i>',
             'advertencia': '<i class="fas fa-exclamation-triangle"></i>',
             'exito': '<i class="fas fa-check-circle"></i>'
         };
-        
+
         notificacion.innerHTML = `
             <span class="notificacion-icono">${iconos[tipo] || iconos.exito}</span>
             <span class="notificacion-mensaje">${mensaje}</span>
             <span class="cerrar">&times;</span>
         `;
-        
+
         document.body.appendChild(notificacion);
-        
+
         setTimeout(() => notificacion.classList.add('mostrar'), 100);
-        
+
         // Cerrar notificación
         notificacion.querySelector('.cerrar').addEventListener('click', () => {
             cerrarNotificacion(notificacion);
         });
-        
+
         // Auto-cierre después de 5 segundos
         setTimeout(() => cerrarNotificacion(notificacion), 5000);
     }
@@ -93,22 +93,22 @@ document.addEventListener('DOMContentLoaded', function() {
     // Funciones del CRUD
     function manejarEnvioFormulario(e) {
         e.preventDefault();
-        
+
         const datosFormulario = obtenerDatosFormulario();
-        
+
         if (!validarFormulario(datosFormulario)) {
             mostrarNotificacion('Por favor complete todos los campos obligatorios', 'error');
             return;
         }
-        
+
         const estaEditando = btnEnviar.dataset.editingId;
-        
+
         if (estaEditando) {
             actualizarTarea(parseInt(estaEditando), datosFormulario);
         } else {
             crearTarea(datosFormulario);
         }
-        
+
         formulario.reset();
         document.getElementById('ver-tarea').scrollIntoView({ behavior: 'smooth' });
     }
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
             estado: 'Pendiente',
             fechaCreacion: new Date().toISOString()
         };
-        
+
         tareas.push(nuevaTarea);
         guardarTareas();
         renderizarTareas(tareas);
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function actualizarTarea(id, { titulo, descripcion, fechaLimite, prioridad }) {
         const tareaIndex = tareas.findIndex(t => t.id === id);
-        
+
         if (tareaIndex !== -1) {
             tareas[tareaIndex] = {
                 ...tareas[tareaIndex],
@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 fechaLimite: formatearFecha(fechaLimite),
                 prioridad
             };
-            
+
             guardarTareas();
             renderizarTareas(tareas);
             mostrarNotificacion('Tarea actualizada con éxito', 'exito');
@@ -166,10 +166,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function renderizarTareas(tareasAMostrar) {
-        tablaTareas.innerHTML = tareasAMostrar.length === 0 
+        tablaTareas.innerHTML = tareasAMostrar.length === 0
             ? '<tr><td colspan="7" style="text-align: center;">No hay tareas registradas</td></tr>'
             : tareasAMostrar.map(tarea => crearFilaTarea(tarea)).join('');
-        
+
         actualizarContadorTareas(tareasAMostrar.length);
         configurarEventListenersTareas();
     }
@@ -184,9 +184,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${tarea.prioridad}</td>
                 <td>
                     <select class="estado-tarea" data-id="${tarea.id}">
-                        ${['Pendiente', 'En progreso', 'Completado'].map(estado => 
-                            `<option value="${estado}" ${tarea.estado === estado ? 'selected' : ''}>${estado}</option>`
-                        ).join('')}
+                        ${['Pendiente', 'En progreso', 'Completado'].map(estado =>
+            `<option value="${estado}" ${tarea.estado === estado ? 'selected' : ''}>${estado}</option>`
+        ).join('')}
                     </select>
                 </td>
                 <td class="acciones">
@@ -205,11 +205,11 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.eliminar').forEach(btn => {
             btn.addEventListener('click', manejarEliminarTarea);
         });
-        
+
         document.querySelectorAll('.editar').forEach(btn => {
             btn.addEventListener('click', manejarEditarTarea);
         });
-        
+
         document.querySelectorAll('.estado-tarea').forEach(select => {
             select.addEventListener('change', manejarCambioEstado);
         });
@@ -228,25 +228,29 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="notificacion-contenido">
                 <span class="notificacion-mensaje">¿Estás seguro de eliminar esta tarea?</span>
                 <div class="notificacion-botones">
-                    <button id="confirmar-eliminar">Sí, eliminar</button>
-                    <button id="cancelar-eliminar">Cancelar</button>
-                </div>
+                <button id="confirmar-eliminar">
+                    <i class="fas fa-trash-alt"></i> Sí, eliminar
+                </button>
+                <button id="cancelar-eliminar">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
             </div>
-            <span class="cerrar">&times;</span>
-        `;
-        
+        </div>
+        <span class="cerrar">&times;</span>
+    `;
+
         document.body.appendChild(confirmacion);
         setTimeout(() => confirmacion.classList.add('mostrar'), 100);
-        
+
         confirmacion.querySelector('#confirmar-eliminar').addEventListener('click', () => {
             eliminarTarea(id);
             cerrarNotificacion(confirmacion);
         });
-        
+
         confirmacion.querySelector('#cancelar-eliminar').addEventListener('click', () => {
             cerrarNotificacion(confirmacion);
         });
-        
+
         confirmacion.querySelector('.cerrar').addEventListener('click', () => {
             cerrarNotificacion(confirmacion);
         });
@@ -262,16 +266,16 @@ document.addEventListener('DOMContentLoaded', function() {
     function manejarEditarTarea(e) {
         const id = parseInt(e.target.dataset.id);
         const tarea = tareas.find(t => t.id === id);
-        
+
         if (tarea) {
             document.getElementById('titulo').value = tarea.titulo;
             document.getElementById('descripcion').value = tarea.descripcion;
             document.getElementById('fecha_limite').value = tarea.fechaLimite.split('/').reverse().join('-');
             document.querySelector(`input[name="prioridad"][value="${tarea.prioridad.toLowerCase()}"]`).checked = true;
-            
+
             btnEnviar.textContent = 'Actualizar Tarea';
             btnEnviar.dataset.editingId = id;
-            
+
             document.getElementById('agregar-tarea').scrollIntoView({ behavior: 'smooth' });
         }
     }
@@ -279,7 +283,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function manejarCambioEstado(e) {
         const id = parseInt(e.target.dataset.id);
         const nuevoEstado = e.target.value;
-        
+
         const tarea = tareas.find(t => t.id === id);
         if (tarea) {
             tarea.estado = nuevoEstado;
@@ -294,32 +298,32 @@ document.addEventListener('DOMContentLoaded', function() {
         const estado = filtroEstado.value;
         const prioridad = filtroPrioridad.value;
         const textoBusqueda = busquedaTitulo.value.toLowerCase();
-        
+
         let tareasFiltradas = tareas;
-        
+
         if (estado !== 'todos') {
-            tareasFiltradas = tareasFiltradas.filter(tarea => 
+            tareasFiltradas = tareasFiltradas.filter(tarea =>
                 estado === 'pendiente' ? tarea.estado === 'Pendiente' :
-                estado === 'en-progreso' ? tarea.estado === 'En progreso' :
-                tarea.estado === 'Completado'
+                    estado === 'en-progreso' ? tarea.estado === 'En progreso' :
+                        tarea.estado === 'Completado'
             );
         }
-        
+
         if (prioridad !== 'todos') {
-            tareasFiltradas = tareasFiltradas.filter(tarea => 
+            tareasFiltradas = tareasFiltradas.filter(tarea =>
                 prioridad === 'critica' ? tarea.prioridad === 'Crítica' :
-                prioridad === 'alta' ? tarea.prioridad === 'Alta' :
-                prioridad === 'media' ? tarea.prioridad === 'Media' :
-                tarea.prioridad === 'Baja'
+                    prioridad === 'alta' ? tarea.prioridad === 'Alta' :
+                        prioridad === 'media' ? tarea.prioridad === 'Media' :
+                            tarea.prioridad === 'Baja'
             );
         }
-        
+
         if (textoBusqueda) {
-            tareasFiltradas = tareasFiltradas.filter(tarea => 
+            tareasFiltradas = tareasFiltradas.filter(tarea =>
                 tarea.titulo.toLowerCase().includes(textoBusqueda)
             );
         }
-        
+
         renderizarTareas(tareasFiltradas);
     }
 

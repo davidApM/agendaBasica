@@ -515,6 +515,33 @@ fieldset {
     font-weight: bold;
 }
 
+/*Estilos para la cajita de las opcciones de Eliminar*/
+/* Contenedor de botones */
+.notificacion-botones {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    justify-content: flex-end;
+}
+
+/* Estilo base para ambos botones */
+/* Estilo moderno alternativo */
+.notificacion-botones button {
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+}
+
+#confirmar-eliminar {
+    background: linear-gradient(135deg, #ff5e5e, #f44336);
+}
+
+#cancelar-eliminar {
+    background: linear-gradient(135deg, #e0e0e0, #cfcfcf);
+}
+
+
 /* Añade este CSS a tu hoja de estilos:*/
 .tarea-vencida {
     background-color: #fff0f0 !important;
