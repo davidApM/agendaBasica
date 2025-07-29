@@ -37,6 +37,28 @@
     /* Efectos */
     --degradado-primario: linear-gradient(135deg, #200E38 0%, #6A0E47 100%);
     --degradado-secundario: linear-gradient(135deg, #B50D57 0%, #FF0D66 100%);
+
+        /* Modo oscuro - valores por defecto (se activarán con clase) */
+    --dm-color-primario: #3A1B6D;
+    --dm-color-secundario: #8D1A5F;
+    --dm-color-terciario: #D81B60;
+    --dm-color-acento: #FF4081;
+    --dm-color-neutral: #E8D7A9;
+    
+    --dm-color-fondo: #121212;
+    --dm-color-fondo-card: #1E1E1E;
+    --dm-color-fondo-header: #3A1B6D;
+    
+    --dm-color-texto: #E0E0E0;
+    --dm-color-texto-claro: #B0B0B0;
+    
+    --dm-color-borde: #333333;
+    --dm-color-borde-oscuro: #D81B60;
+    
+    --dm-sombra-suave: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --dm-sombra-media: 0 4px 12px rgba(0, 0, 0, 0.4);
+
+
 }
 
 /* Estilos base */
@@ -103,7 +125,7 @@ header h1 {
 /* Menú lateral */
 .menu-lateral {
     width: 240px;
-    background-color: white;
+    background-color: var( --color-fondo); 
     padding: 20px;
     border-radius: 10px;
     box-shadow: var(--sombra-suave);
@@ -165,7 +187,7 @@ header h1 {
 
 /* Secciones */
 .descripcion {
-    background-color: white;
+    background-color:var( --color-fondo); 
     padding: 25px;
     margin-bottom: 25px;
     border-radius: 10px;
@@ -191,7 +213,7 @@ header h1 {
 /* Formulario */
 .contenido-principal-formulario {
     padding: 25px;
-    background-color: white;
+    background-color:var( --color-fondo); 
     border-radius: 12px;
     box-shadow: var(--sombra-suave);
     border: 1px solid var(--color-borde);
@@ -300,7 +322,7 @@ fieldset {
     margin: 20px 0;
     border-radius: 8px;
     box-shadow: var(--sombra-suave);
-    background-color: white;
+    background-color: var( --color-fondo); 
     border: 1px solid var(--color-borde);
 }
 
@@ -371,7 +393,7 @@ fieldset {
     gap: 15px;
     margin-bottom: 25px;
     padding: 20px;
-    background-color: white;
+    background-color: var( --color-fondo); 
     border-radius: 8px;
     box-shadow: var(--sombra-suave);
     border: 1px solid var(--color-borde);
@@ -416,7 +438,7 @@ fieldset {
 
 /* Footer */
 .footer {
-    background-color: var(--color-secundario);
+    background-color: var(--color-primario);
     color: white;
     padding: 30px 0;
     margin-top: 40px;
@@ -447,6 +469,90 @@ fieldset {
 
 .footer-redes a:hover {
     opacity: 0.8;
+}
+
+/*MODO OSCURO PARA CIERTOS ELEMENTOS*/
+/* Modo oscuro - se activa con clase en body */
+body.modo-oscuro {
+    --color-primario: var(--dm-color-primario);
+    --color-secundario: var(--dm-color-secundario);
+    --color-terciario: var(--dm-color-terciario);
+    --color-acento: var(--dm-color-acento);
+    --color-neutral: var(--dm-color-neutral);
+    
+    --color-fondo: var(--dm-color-fondo);
+    --color-fondo-card: var(--dm-color-fondo-card);
+    --color-fondo-header: var(--dm-color-fondo-header);
+    
+    --color-texto: var(--dm-color-texto);
+    --color-texto-claro: var(--dm-color-texto-claro);
+    
+    --color-borde: var(--dm-color-borde);
+    --color-borde-oscuro: var(--dm-color-borde-oscuro);
+    
+    --sombra-suave: var(--dm-sombra-suave);
+    --sombra-media: var(--dm-sombra-media);
+}
+
+/* Transiciones suaves para el cambio */
+body,
+header,
+footer,
+.descripcion,
+.contenido-principal-formulario,
+.menu-lateral,
+.tabla-container,
+.tabla-tareas th,
+.tabla-tareas td,
+.filtros-container {
+    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+}
+
+/* Ajustes específicos para modo oscuro */
+body.modo-oscuro .menu-lateral a {
+    color: var(--dm-color-texto);
+}
+
+body.modo-oscuro .menu-lateral{
+    color: var(--dm-color-fondo-card)
+}
+
+body.modo-oscuro .menu-lateral a:hover {
+    color: var(--dm-color-texto-inverso);
+}
+
+body.modo-oscuro .tabla-tareas tr:nth-child(even) {
+    background-color: rgba(58, 27, 109, 0.1);
+}
+
+body.modo-oscuro .tabla-tareas tr:hover {
+    background-color: rgba(58, 27, 109, 0.2);
+}
+
+/*Parte del formulario */
+/* Añade esto a tu CSS para los inputs en modo oscuro */
+body.modo-oscuro input,
+body.modo-oscuro textarea,
+body.modo-oscuro select {
+    background-color: var(--dm-color-fondo-card);
+    color: var(--dm-color-texto);
+    border-color: var(--dm-color-borde);
+}
+
+/* Para el placeholder */
+body.modo-oscuro input::placeholder,
+body.modo-oscuro textarea::placeholder {
+    color: var(--dm-color-texto-claro);
+    opacity: 0.7;
+}
+
+/* Estilo para inputs enfocados */
+body.modo-oscuro input:focus,
+body.modo-oscuro textarea:focus,
+body.modo-oscuro select:focus {
+    border-color: var(--dm-color-acento);
+    box-shadow: 0 0 0 2px rgba(var(--dm-color-acento-rgb), 0.2);
+    outline: none;
 }
 
 /* Responsive */
